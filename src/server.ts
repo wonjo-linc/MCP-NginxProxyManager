@@ -22,6 +22,7 @@ const OAUTH_CLIENT_SECRET = process.env.OAUTH_CLIENT_SECRET || '';
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // --- OAuth 2.0 ---
 const authCodes = new Map<string, { clientId: string; redirectUri: string; expiresAt: number }>();
