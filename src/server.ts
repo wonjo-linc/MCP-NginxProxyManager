@@ -33,8 +33,11 @@ setInterval(() => {
   for (const [k, v] of activeTokens) if (v.expiresAt < now) activeTokens.delete(k);
 }, 60_000);
 
+app.set('trust proxy', true);
+
 app.get('/.well-known/oauth-authorization-server', (_req, res) => {
-  const base = `${_req.protocol}://${_req.get('host')}`;
+  const proto = _req.get('x-forwarded-proto') || _req.protocol;
+  const base = `${proto}://${_req.get('host')}`;
   res.json({
     issuer: base,
     authorization_endpoint: `${base}/authorize`,
