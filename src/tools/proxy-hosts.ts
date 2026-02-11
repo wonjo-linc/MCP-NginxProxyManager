@@ -7,6 +7,7 @@ export function registerProxyHostTools(server: McpServer, client: NpmClient) {
     'npm_list_proxy_hosts',
     'List all proxy hosts configured in Nginx Proxy Manager.',
     {},
+    { readOnlyHint: true, destructiveHint: false, openWorldHint: true },
     async () => {
       const result = await client.listProxyHosts();
       return {
@@ -21,6 +22,7 @@ export function registerProxyHostTools(server: McpServer, client: NpmClient) {
     {
       id: z.number().describe('Proxy host ID'),
     },
+    { readOnlyHint: true, destructiveHint: false, openWorldHint: true },
     async ({ id }) => {
       const result = await client.getProxyHost(id);
       return {
@@ -47,6 +49,7 @@ export function registerProxyHostTools(server: McpServer, client: NpmClient) {
       access_list_id: z.number().optional().describe('Access list ID (0 for none)'),
       advanced_config: z.string().optional().describe('Custom Nginx configuration'),
     },
+    { readOnlyHint: false, destructiveHint: false, openWorldHint: true },
     async (params) => {
       const result = await client.createProxyHost(params);
       return {
@@ -74,6 +77,7 @@ export function registerProxyHostTools(server: McpServer, client: NpmClient) {
       access_list_id: z.number().optional().describe('Access list ID'),
       advanced_config: z.string().optional().describe('Custom Nginx configuration'),
     },
+    { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: true },
     async ({ id, ...data }) => {
       const result = await client.updateProxyHost(id, data);
       return {
@@ -88,6 +92,7 @@ export function registerProxyHostTools(server: McpServer, client: NpmClient) {
     {
       id: z.number().describe('Proxy host ID to delete'),
     },
+    { readOnlyHint: false, destructiveHint: true, idempotentHint: true, openWorldHint: true },
     async ({ id }) => {
       await client.deleteProxyHost(id);
       return {

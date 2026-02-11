@@ -7,6 +7,7 @@ export function registerCertificateTools(server: McpServer, client: NpmClient) {
     'npm_list_certificates',
     'List all SSL certificates managed by Nginx Proxy Manager.',
     {},
+    { readOnlyHint: true, destructiveHint: false, openWorldHint: true },
     async () => {
       const result = await client.listCertificates();
       return {
@@ -37,6 +38,7 @@ export function registerCertificateTools(server: McpServer, client: NpmClient) {
         .optional()
         .describe('DNS provider credentials'),
     },
+    { readOnlyHint: false, destructiveHint: false, openWorldHint: true },
     async ({ provider, nice_name, domain_names, ...meta }) => {
       const result = await client.createCertificate({
         provider,
@@ -56,6 +58,7 @@ export function registerCertificateTools(server: McpServer, client: NpmClient) {
     {
       id: z.number().describe('Certificate ID to delete'),
     },
+    { readOnlyHint: false, destructiveHint: true, idempotentHint: true, openWorldHint: true },
     async ({ id }) => {
       await client.deleteCertificate(id);
       return {
@@ -70,6 +73,7 @@ export function registerCertificateTools(server: McpServer, client: NpmClient) {
     {
       id: z.number().describe('Certificate ID to renew'),
     },
+    { readOnlyHint: false, destructiveHint: true, openWorldHint: true },
     async ({ id }) => {
       const result = await client.renewCertificate(id);
       return {

@@ -6,6 +6,7 @@ export function registerSystemTools(server: McpServer, client: NpmClient) {
     'npm_get_health',
     'Get Nginx Proxy Manager health status and version information.',
     {},
+    { readOnlyHint: true, destructiveHint: false, openWorldHint: true },
     async () => {
       const result = await client.getHealth();
       return {
@@ -18,6 +19,7 @@ export function registerSystemTools(server: McpServer, client: NpmClient) {
     'npm_get_hosts_report',
     'Get hosts statistics report (counts of proxy, redirection, stream, and dead hosts).',
     {},
+    { readOnlyHint: true, destructiveHint: false, openWorldHint: true },
     async () => {
       const result = await client.getHostsReport();
       return {
@@ -30,6 +32,7 @@ export function registerSystemTools(server: McpServer, client: NpmClient) {
     'npm_list_audit_log',
     'List audit log entries showing recent actions performed in Nginx Proxy Manager.',
     {},
+    { readOnlyHint: true, destructiveHint: false, openWorldHint: true },
     async () => {
       const result = await client.listAuditLog();
       return {

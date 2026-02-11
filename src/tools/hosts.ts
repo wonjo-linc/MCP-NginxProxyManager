@@ -18,6 +18,7 @@ export function registerHostTools(server: McpServer, client: NpmClient) {
     {
       type: hostTypeEnum,
     },
+    { readOnlyHint: true, destructiveHint: false, openWorldHint: true },
     async ({ type }) => {
       const result = await client.listHosts(type as HostType);
       return {
@@ -33,6 +34,7 @@ export function registerHostTools(server: McpServer, client: NpmClient) {
       type: hostTypeEnum,
       id: z.number().describe('Host ID'),
     },
+    { readOnlyHint: true, destructiveHint: false, openWorldHint: true },
     async ({ type, id }) => {
       const result = await client.getHost(type as HostType, id);
       return {
@@ -53,6 +55,7 @@ export function registerHostTools(server: McpServer, client: NpmClient) {
         .record(z.unknown())
         .describe('Host creation data (fields depend on type)'),
     },
+    { readOnlyHint: false, destructiveHint: false, openWorldHint: true },
     async ({ type, data }) => {
       const result = await client.createHost(type as HostType, data);
       return {
@@ -68,6 +71,7 @@ export function registerHostTools(server: McpServer, client: NpmClient) {
       type: hostTypeEnum,
       id: z.number().describe('Host ID to delete'),
     },
+    { readOnlyHint: false, destructiveHint: true, idempotentHint: true, openWorldHint: true },
     async ({ type, id }) => {
       await client.deleteHost(type as HostType, id);
       return {
@@ -86,6 +90,7 @@ export function registerHostTools(server: McpServer, client: NpmClient) {
       id: z.number().describe('Host ID'),
       action: z.enum(['enable', 'disable']).describe('Action to perform'),
     },
+    { readOnlyHint: false, destructiveHint: true, openWorldHint: true },
     async ({ type, id, action }) => {
       if (action === 'enable') {
         await client.enableHost(type as HostType, id);

@@ -7,6 +7,7 @@ export function registerAccessListTools(server: McpServer, client: NpmClient) {
     'npm_list_access_lists',
     'List all access control lists.',
     {},
+    { readOnlyHint: true, destructiveHint: false, openWorldHint: true },
     async () => {
       const result = await client.listAccessLists();
       return {
@@ -47,6 +48,7 @@ export function registerAccessListTools(server: McpServer, client: NpmClient) {
         .optional()
         .describe('IP-based access rules'),
     },
+    { readOnlyHint: false, destructiveHint: false, openWorldHint: true },
     async (params) => {
       const result = await client.createAccessList(params);
       return {
@@ -61,6 +63,7 @@ export function registerAccessListTools(server: McpServer, client: NpmClient) {
     {
       id: z.number().describe('Access list ID to delete'),
     },
+    { readOnlyHint: false, destructiveHint: true, idempotentHint: true, openWorldHint: true },
     async ({ id }) => {
       await client.deleteAccessList(id);
       return {
